@@ -1,0 +1,107 @@
+{
+  "id": "1378762",
+  "name": "afei.fun",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "13764775",
+      "name": "QQ",
+      "font_class": "QQ",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "7141689",
+      "name": "github",
+      "font_class": "github",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "318448",
+      "name": "youtube",
+      "font_class": "youtube",
+      "unicode": "e660",
+      "unicode_decimal": 58976
+    },
+    {
+      "icon_id": "348956",
+      "name": "twitter",
+      "font_class": "twitter",
+      "unicode": "ec9c",
+      "unicode_decimal": 60572
+    },
+    {
+      "icon_id": "375641",
+      "name": "Project Experience",
+      "font_class": "xiangmujingyan",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "1061079",
+      "name": "Blog",
+      "font_class": "blog",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "1262364",
+      "name": "weixin",
+      "font_class": "weixin",
+      "unicode": "e739",
+      "unicode_decimal": 59193
+    },
+    {
+      "icon_id": "1611119",
+      "name": "菜单",
+      "font_class": "caidan1",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "5260068",
+      "name": "facebook",
+      "font_class": "facebook",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "5994109",
+      "name": "portfolio",
+      "font_class": "portfolio",
+      "unicode": "e646",
+      "unicode_decimal": 58950
+    },
+    {
+      "icon_id": "6204095",
+      "name": "日历 日期",
+      "font_class": "riliriqi",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "6237080",
+      "name": "微博",
+      "font_class": "tubiaozhizuo-",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "6976477",
+      "name": "email",
+      "font_class": "email",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "10330641",
+      "name": "preferences",
+      "font_class": "preferences",
+      "unicode": "e65b",
+      "unicode_decimal": 58971
+    }
+  ]
+}
