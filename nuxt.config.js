@@ -51,7 +51,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: process.env.NODE_ENV==="production"?"http://afei.fun":"http://localhost:3000",
+    baseURL: process.env.NODE_ENV==="production"?"http://afei.fun/":"http://localhost:3000/",
     credentials: true
   },
 
