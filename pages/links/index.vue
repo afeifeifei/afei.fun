@@ -12,6 +12,18 @@
   <article class="linkList">
     <ul>
       <li v-for="item in linkData">
+        <svg
+          width="100%" height="100%"
+          viewBox="0 0 400 400"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M 399.5 399.5 V 0.5 H 0.5 V 399.5 H 399.5"
+            fill="none"
+            stroke-dasharray="1600"
+            stroke-dashoffset="1600"
+          ></path>
+        </svg>
         <a :href="item.url" target="_blank">
           <div class="top">
             <p
@@ -77,18 +89,31 @@ export default {
         flex-wrap: wrap;
         justify-content: space-between;
         li{
+          position: relative;
           box-sizing: border-box;
           flex: 1;
           min-width: 260px;
           margin: 0 7.5px 15px;
           padding: 5px;
           background-color: rgba(27, 31, 35, 0.05);
-          box-shadow: 0px 0px 0px #ccc;
-          transition: .3s;
+          path{
+            transition: 1s;
+            stroke: #2789fc;
+          }
           &:hover{
-            box-shadow: 0px 0px 5px #ccc;
+            path{
+              stroke-dashoffset: 0;
+              stroke: #2789fc;
+            }
+          }
+          svg{
+            position: absolute;
+            top: 0;
+            left: 0;
           }
           a{
+            position: relative;
+            z-index: 2;
             display: block;
             width: 100%;
             height: 100%;
