@@ -14,7 +14,7 @@
       </div>
     </div>
     <!--备案号-->
-    <p class="root_copy">湘ICP备19002644号-1</p>
+    <p class="root_copy">湘ICP备19002644号</p>
     <!--漂浮猫爪-->
     <Kitty></Kitty>
   </div>
