@@ -19,6 +19,9 @@ router.use("/register", require("./register/index"))
 /*友链接口*/
 router.use("/link", require("./link/index"))
 
+/*用户信息获取*/
+router.use("/userInfo", require("./userInfo/index"))
+
 
 module.exports = router;
 

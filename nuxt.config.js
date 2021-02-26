@@ -14,6 +14,13 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
+    ],
+    script: [
+      {
+        src: 'http://connect.qq.com/qc_jssdk.js',
+        'data-appid': '101935222',
+        'data-redirecturi': 'http://afei.fun/user'
+      }
     ]
   },
 

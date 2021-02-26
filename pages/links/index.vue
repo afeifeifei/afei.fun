@@ -14,14 +14,14 @@
       <li v-for="item in linkData">
         <svg
           width="100%" height="100%"
-          viewBox="0 0 400 400"
+          viewBox="0 0 800 400"
           preserveAspectRatio="none"
         >
           <path
-            d="M 399.5 399.5 V 0.5 H 0.5 V 399.5 H 399.5"
+            d="M 799.5 399.5 V 0.5 H 0.5 V 399.5 H 799.5"
             fill="none"
-            stroke-dasharray="1600"
-            stroke-dashoffset="1600"
+            stroke-dasharray="2400"
+            stroke-dashoffset="2400"
           ></path>
         </svg>
         <a :href="item.url" target="_blank">
@@ -98,12 +98,12 @@ export default {
           background-color: rgba(27, 31, 35, 0.05);
           path{
             transition: 1s;
-            stroke: #2789fc;
+            stroke: #0123fd;
           }
           &:hover{
             path{
               stroke-dashoffset: 0;
-              stroke: #2789fc;
+              stroke: #0123fd;
             }
           }
           svg{

@@ -1,57 +1,133 @@
 <template>
-<div id="AppNav">
-  <div class="main">
-    <!--左侧logo-->
-    <div class="logo">
-      <a href="/">afei.fun</a>
-    </div>
-    <!--中间导航-->
-    <div class="nav">
-      <ul>
-        <li class="index">
-          <nuxt-link :to="{name:'index'}">首页</nuxt-link>
-        </li>
-        <li class="articles">
-          <nuxt-link :to="{name:'article'}">文章</nuxt-link>
-        </li>
-        <li class="message">
-          <nuxt-link :to="{name:'message'}">留言</nuxt-link>
-        </li>
-        <li class="daily">
-          <nuxt-link :to="{name:'daily'}">生活</nuxt-link>
-        </li>
-        <li class="links">
-          <nuxt-link :to="{name:'links'}">友链</nuxt-link>
-        </li>
-        <li class="about">
-          <nuxt-link :to="{name:'about'}">关于</nuxt-link>
-        </li>
-      </ul>
-    </div>
-    <!--右侧登陆-->
-    <div class="login">
-      <el-button type="success" size="small">登陆</el-button><el-button type="primary" size="small">注册</el-button>
+  <div id="AppNav">
+    <div class="main">
+      <!--左侧logo-->
+      <div class="logo">
+        <a href="/">afei.fun</a>
+      </div>
+      <!--中间导航-->
+      <div class="nav">
+        <ul>
+          <li class="index">
+            <nuxt-link :to="{name:'index'}">首页</nuxt-link>
+          </li>
+          <li class="articles">
+            <nuxt-link :to="{name:'article'}">文章</nuxt-link>
+          </li>
+          <li class="message">
+            <nuxt-link :to="{name:'message'}">留言</nuxt-link>
+          </li>
+          <li class="daily">
+            <nuxt-link :to="{name:'daily'}">生活</nuxt-link>
+          </li>
+          <li class="links">
+            <nuxt-link :to="{name:'links'}">友链</nuxt-link>
+          </li>
+          <li class="about">
+            <nuxt-link :to="{name:'about'}">关于</nuxt-link>
+          </li>
+        </ul>
+      </div>
+      <!--右侧登陆-->
+      <div class="login">
+        <div class="loginTrue" v-if="ifLogin">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="点击退出登录"
+            placement="bottom-start"
+          >
+            <img
+              :src="userInfo.photo"
+              @click="handleLogout"
+            >
+          </el-tooltip>
 
+        </div>
+        <div class="loginFalse" v-else>
+          <img
+            src="~static/img/qq-login.png"
+            alt="QQ"
+            @click="handleLogin"
+          >
+        </div>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
+
+import {mapState, mapMutations} from "vuex"
+
 export default {
   name: "AppNav",
   data(){
     return {
-      showLoginBox: false,
-      showRegisterBox: false
+      ifLogin: false
     }
+  },
+  computed:{
+    ...mapState(["userInfo"])
+  },
+  methods: {
+    handleLogin() {
+      window.location.href="https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=101935222&redirect_uri=http://afei.fun/user";
+    },
+    handleLogout(){
+      QC.Login.signOut();
+      window.localStorage.removeItem("openId")
+      window.localStorage.removeItem("access_token")
+      window.location.reload()
+    },
+    ...mapMutations(['login','logout'])
+  },
+  async mounted() {
+
+    //获取localStorage
+    let openId = window.localStorage.getItem("openId"),
+      access_token = window.localStorage.getItem("access_token");
+
+    //没有值得表示未登录
+    if (!openId || !access_token)return
+
+    //有值则表示已登录 -- 请求用户信息
+    let res = await this.$axios({
+      method: "get",
+      url: "/userInfo",
+      params: {
+        access_token
+        ,openid: openId
+        ,"oauth_consumer_key": 101935222
+      }
+    })
+
+    //判断用户信息是否请求成功
+    if (res.data.code !== 0) {
+      return
+    }
+    let res2 = await this.$axios({
+      method: "post"
+      ,url: "/login"
+      ,data: {
+        openId,
+        ...res.data.data
+      }
+    })
+
+    //判断用户是否login成功
+    if (res2.data.code !== 0) {
+      return
+    }
+    this.login(res2.data.data)
+    this.ifLogin = true;
   }
 }
 </script>
 
 <style lang="less" scoped>
 @height: 50px;
-#AppNav{
+#AppNav {
   overflow: hidden;
   position: fixed;
   top: 0;
@@ -63,7 +139,7 @@ export default {
   box-shadow: 0 0 2px #ccc;
 
   //主内容
-  .main{
+  .main {
     display: flex;
     box-sizing: border-box;
     padding: 0 15px;
@@ -73,29 +149,33 @@ export default {
     justify-content: space-between;
 
     //logo
-    .logo{
+    .logo {
       width: 130px;
       height: @height;
       line-height: 42px;
       font-size: 26px;
       letter-spacing: 5px;
-      font-family: "Pacifico","serif";
-      a{
+      font-family: "Pacifico", "serif";
+
+      a {
         display: block;
         color: rgba(0, 0, 0, 0.7);
       }
     }
 
     //nav
-    .nav{
+    .nav {
       @width: 78px;
       min-width: @width*6;
-      ul{
+
+      ul {
         display: flex;
         height: 100%;
-        li{
+
+        li {
           height: 100%;
-          a{
+
+          a {
             display: block;
             height: 100% - 2px;
             border-bottom: 2px solid transparent;
@@ -106,10 +186,12 @@ export default {
             font-weight: bolder;
 
             transition: all .3s;
-            &:hover{
+
+            &:hover {
               color: #00b7ff;
             }
-            &.nuxt-link-exact-active{
+
+            &.nuxt-link-exact-active {
               color: #00b7ff;
               border-color: #00b7ff;
             }
@@ -119,10 +201,41 @@ export default {
     }
 
     //login
-    .login{
+    .login {
+      position: relative;
       min-width: 123px;
       line-height: @height;
       /*background-color: pink;*/
+      .loginTrue{
+        overflow: hidden;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        width: 34px;
+        height: 34px;
+        margin-top: -17px;
+        border-radius: 50%;
+        img{
+          display: block;
+          width: 100%;
+          height: 100%;
+          cursor: pointer;
+        }
+      }
+
+      .loginFalse {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        width: 76px;
+        height: 24px;
+        margin-top: -12px;
+
+        img {
+          display: block;
+          cursor: pointer;
+        }
+      }
     }
   }
 }

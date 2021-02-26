@@ -19,7 +19,13 @@
     <Kitty></Kitty>
   </div>
 </template>
-
+<script>
+export default {
+  name: "default",
+  mounted() {
+  }
+}
+</script>
 <style lang="less">
 //背景色与背景图
 body {

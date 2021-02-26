@@ -14,7 +14,8 @@
     "element-ui": "^2.15.0",
     "express": "^4.17.1",
     "mongoose": "^5.11.13",
-    "nuxt": "^2.14.12"
+    "nuxt": "^2.14.12",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.12",
