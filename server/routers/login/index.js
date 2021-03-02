@@ -41,10 +41,13 @@ router.post("/", async (req, res) => {
       //不存在 -- 注册用户
       await userDB.create(params)
     }
+
+    let userData = await userDB.findOne({openId: params.openId})
+
     return res.send({
       code: 0,
       msg: "登录成功",
-      data: params
+      data: userData
     })
   }catch (e) {
     console.log(e);

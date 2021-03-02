@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "3948176",
+      "name": "回复",
+      "font_class": "huifu",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "20048459",
+      "name": "爱心",
+      "font_class": "xinaixin",
+      "unicode": "e667",
+      "unicode_decimal": 58983
+    },
+    {
+      "icon_id": "19654110",
+      "name": "表情",
+      "font_class": "biaoqing",
+      "unicode": "e7fc",
+      "unicode_decimal": 59388
+    },
+    {
+      "icon_id": "18166694",
+      "name": "抖音",
+      "font_class": "douyin",
+      "unicode": "e8db",
+      "unicode_decimal": 59611
+    },
+    {
       "icon_id": "13764775",
       "name": "QQ",
       "font_class": "QQ",

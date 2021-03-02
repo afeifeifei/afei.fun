@@ -58,7 +58,7 @@ export default {
 
 <style scoped lang="less">
 #Side{
-  width: 290px;
+  width: 100%;
   opacity: .5;
   transition: opacity 1s;
 
@@ -68,7 +68,7 @@ export default {
 
   .sticky{
     box-sizing: border-box;
-    width: 290px;
+    width: 270px;
     margin-top: 15px;
     &.fixed{
       position: fixed;

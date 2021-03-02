@@ -60,7 +60,7 @@ body {
     padding: 65px 15px 0;
     margin: 0 auto;
     .r_c_left{
-      width: 290px;
+      width: 270px;
       margin-right: 15px;
     }
     .r_c_right{

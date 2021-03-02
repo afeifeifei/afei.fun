@@ -71,56 +71,78 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
+    //登陆
     handleLogin() {
       window.location.href="https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=101935222&redirect_uri=http://afei.fun/user";
     },
+    //退出
     handleLogout(){
       QC.Login.signOut();
       window.localStorage.removeItem("openId")
       window.localStorage.removeItem("access_token")
       window.location.reload()
     },
-    ...mapMutations(['login','logout'])
+    //vuex
+    ...mapMutations(['login','logout']),
+    //登陆检测
+    async loginCheck(){
+      //本地测试登陆
+      if (process.env.NODE_ENV !== "production") {
+
+      }
+
+      //获取localStorage
+      let openId = window.localStorage.getItem("openId"),
+        access_token = window.localStorage.getItem("access_token");
+
+      //没有值得表示未登录
+      if (!openId || !access_token)return
+
+      //有值则表示已登录 -- 请求用户信息
+      let res = await this.$axios({
+        method: "get",
+        url: "/userInfo",
+        params: {
+          access_token
+          ,openid: openId
+          ,"oauth_consumer_key": 101935222
+        }
+      })
+
+      //判断用户信息是否请求成功
+      if (res.data.code !== 0) {
+        return
+      }
+      let res2 = await this.$axios({
+        method: "post"
+        ,url: "/login"
+        ,data: {
+          openId,
+          ...res.data.data
+        }
+      })
+
+      //判断用户是否login成功
+      if (res2.data.code !== 0) {
+        return
+      }
+      this.login(res2.data.data)
+      this.ifLogin = true;
+    },
+    //百度统计
+    baidu(){
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?948862210314e43d47e594247aa9d06e";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    }
   },
   async mounted() {
-
-    //获取localStorage
-    let openId = window.localStorage.getItem("openId"),
-      access_token = window.localStorage.getItem("access_token");
-
-    //没有值得表示未登录
-    if (!openId || !access_token)return
-
-    //有值则表示已登录 -- 请求用户信息
-    let res = await this.$axios({
-      method: "get",
-      url: "/userInfo",
-      params: {
-        access_token
-        ,openid: openId
-        ,"oauth_consumer_key": 101935222
-      }
-    })
-
-    //判断用户信息是否请求成功
-    if (res.data.code !== 0) {
-      return
-    }
-    let res2 = await this.$axios({
-      method: "post"
-      ,url: "/login"
-      ,data: {
-        openId,
-        ...res.data.data
-      }
-    })
-
-    //判断用户是否login成功
-    if (res2.data.code !== 0) {
-      return
-    }
-    this.login(res2.data.data)
-    this.ifLogin = true;
+    this.baidu();
+    await this.loginCheck();
   }
 }
 </script>

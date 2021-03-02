@@ -73,10 +73,10 @@
       li{
         position: relative;
         float: left;
-        width: 60px;
-        height: 60px;
-        margin-right: 3.3px;
-        margin-bottom: 3.3px;
+        width: 53px;
+        height: 53px;
+        margin-right: 6px;
+        margin-bottom: 6px;
         background: none no-repeat center center/cover;
         &:nth-child(4n){
           margin-right: 0;

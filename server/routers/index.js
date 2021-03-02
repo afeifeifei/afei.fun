@@ -22,6 +22,9 @@ router.use("/link", require("./link/index"))
 /*用户信息获取*/
 router.use("/userInfo", require("./userInfo/index"))
 
+/*留言*/
+router.use("/messages", require("./messages/index"))
+
 
 module.exports = router;
 
