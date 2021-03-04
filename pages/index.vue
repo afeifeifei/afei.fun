@@ -223,7 +223,7 @@
 <style scoped lang="less">
 
   #Home {
-    font-family: "Quicksand",sans-serif;
+    font-family: "Quicksand","Microsoft YaHei",sans-serif;
 
     > article {
       box-sizing: border-box;
@@ -612,7 +612,7 @@
             font-weight: 700;
             font-size: 16px;
             letter-spacing: 2px;
-            font-family: "Quicksand","sans-serif";
+            font-family: "Quicksand","Microsoft YaHei","sans-serif";
             color: #000;
             outline: 0;
             cursor: pointer;

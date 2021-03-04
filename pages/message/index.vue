@@ -374,7 +374,7 @@ export default {
     box-shadow: 0 0 4px #ddd;
     padding: 25px 20px;
     background-color: #fff;
-    font-family: "Quicksand", sans-serif;
+    font-family: "Quicksand","Microsoft YaHei", sans-serif;
 
     h2 {
       margin-bottom: 15px;
@@ -403,7 +403,7 @@ export default {
 
         textarea {
           min-height: 80px !important;
-          font-family: "Quicksand", "微软雅黑", sans-serif;
+          font-family: "Quicksand","Microsoft YaHei", sans-serif;
           color: #444;
           font-size: 14px;
           letter-spacing: 4px;

@@ -70,7 +70,7 @@ export default {
       }
 
       p:nth-child(2) {
-        font-family: "Quicksand", "sans-serif";
+        font-family: "Quicksand","Microsoft YaHei", "sans-serif";
         color: #555;
         font-weight: bold;
         letter-spacing: 3px;
@@ -109,7 +109,7 @@ export default {
       border-radius: 23px;
       margin: 0 auto;
       box-shadow: 0 0 0 #888;
-      font-family: "Quicksand", "sans-serif";
+      font-family: "Quicksand","Microsoft YaHei", "sans-serif";
       font-size: 14px;
       text-align: center;
       line-height: 40px;

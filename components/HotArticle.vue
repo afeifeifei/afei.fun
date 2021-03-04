@@ -20,7 +20,7 @@
     box-sizing: border-box;
     width: 100%;
 
-    font-family: "Quicksand","sans-serif";
+    font-family: "Quicksand","Microsoft YaHei","sans-serif";
 
     box-shadow: 0 0 4px #ddd;
     background-color: #fff;
@@ -59,7 +59,7 @@
           color: #fff;
           text-align: center;
           font-weight: 100;
-          font-family: "Pacifico","sans-serif";
+          font-family: "Pacifico","Microsoft YaHei","sans-serif";
 
         }
 
