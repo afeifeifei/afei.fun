@@ -73,7 +73,7 @@ export default {
   methods: {
     //登陆
     handleLogin() {
-      window.location.href="https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=101935222&redirect_uri=http://afei.fun/user";
+      window.location.replace="https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=101935222&redirect_uri=http://afei.fun/user";
     },
     //退出
     handleLogout(){
@@ -88,8 +88,7 @@ export default {
     async loginCheck(){
       //本地测试登陆
       if (process.env.NODE_ENV !== "production") {
-
-      }
+        }
 
       //获取localStorage
       let openId = window.localStorage.getItem("openId"),

@@ -10,19 +10,29 @@ let userSchema = new Schema({
   //注册时间
   regTime: {type: Number, default: Date.now}
   //用户openId
-  ,openId: String
+  , openId: String
   //省份
-  ,province: String
+  , province: String
   //城市信息
-  ,city: String
+  , city: String
   //用户头像
-  ,photo: String
+  , photo: String
   //性别
-  ,gender: String
+  , gender: String
   //昵称
-  ,nickname: String
+  , nickname: String
   //出生年份
-  ,year: String
+  , year: String
+})
+
+userSchema.pre("save", function (next) {
+  this.admin = false
+  next();
+})
+
+userSchema.pre("updateOne", function (next) {
+  if (this.admin)this.admin = false
+  next();
 })
 
 module.exports = mongoose.model("user", userSchema)

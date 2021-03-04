@@ -41,15 +41,16 @@ router.get("/", async (req, res) => {
     let data = await
       messageDB
         .find({}, {}, {sort: {time: -1}})
-        .populate("user")
-        .populate("children.user")
-        .populate("children.reply")
+        .populate("user",{nickname:1,photo:1,admin:1})
+        .populate("children.user",{nickname:1,photo:1,admin:1})
+        .populate("children.reply",{nickname:1,photo:1,admin:1})
     return res.send({
       code: 0,
       msg: "请求成功",
       data
     })
   } catch (e) {
+    console.log(e);
     return res.send({
       code: 4,
       msg: "服务器错误",
@@ -86,15 +87,15 @@ router.post("/likes", async (req, res) => {
 router.post("/reply", async (req, res) => {
   let {messageId, replyId, userId, content} = req.body
 
-  if (!messageId || !replyId || !userId || !content){
+  if (!messageId || !replyId || !userId || !content) {
     return res.send({
       code: 1,
       msg: "参数错误"
     })
   }
 
-  try{
-    await messageDB.updateOne({_id: messageId},{
+  try {
+    await messageDB.updateOne({_id: messageId}, {
       $push: {
         children: {
           content,
@@ -109,7 +110,7 @@ router.post("/reply", async (req, res) => {
       msg: "回复成功"
     })
 
-  }catch (e) {
+  } catch (e) {
     return res.send({
       code: 4,
       msg: "服务器错误，请稍后再试"
@@ -117,6 +118,7 @@ router.post("/reply", async (req, res) => {
   }
 
 })
+
 
 module.exports = router;
 

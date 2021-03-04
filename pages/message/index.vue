@@ -31,11 +31,12 @@
         <li class="first" v-for="(item,index) in messageList">
           <div class="left">
             <img :src="item.user.photo" alt="">
+            <span v-if="item.user.admin" class="admin" title="管理员"></span>
           </div>
           <div class="right">
             <p class="name">{{ item.user.nickname }} <span>{{ item.time | fmtTime }}</span></p>
             <pre class="content">{{ item.content }}</pre>
-            <p class="like-reply">
+            <div class="like-reply">
               <i
                 class="like iconfont icon-xinaixin"
                 @click="handleLikesClick(item,item)"
@@ -48,18 +49,29 @@
                 class="reply iconfont icon-huifu"
                 @click="handleReplyClick(index,item,item)"
               ></i>
-            </p>
-            <div class="second" v-for="childItem in item.children">
+              <el-popconfirm
+                v-if="userInfo.admin"
+                title="确认删除？"
+                @confirm="handleDelete(item)"
+              >
+                <i
+                  class="delete iconfont icon-tubiaozhizuo-1"
+                  slot="reference"
+                ></i>
+              </el-popconfirm>
+            </div>
+            <div class="second" v-for="(childItem,childIndex) in item.children">
               <div class="left">
                 <img :src="childItem.user.photo" alt="">
+                <span v-if="childItem.user.admin" class="admin" title="管理员"></span>
               </div>
               <div class="right">
                 <p class="name">{{ childItem.user.nickname }} <span>{{ childItem.time | fmtTime }}</span></p>
                 <p class="content">
-                  <span>@{{childItem.reply.nickname}}</span>
+                  <span>@{{ childItem.reply.nickname }}</span>
                   {{ childItem.content }}
                 </p>
-                <p class="like-reply">
+                <div class="like-reply">
                   <i
                     class="like iconfont icon-xinaixin"
                     @click="handleLikesClick(childItem, item)"
@@ -72,7 +84,17 @@
                     class="reply iconfont icon-huifu"
                     @click="handleReplyClick(index,childItem,item)"
                   ></i>
-                </p>
+                  <el-popconfirm
+                    v-if="userInfo.admin"
+                    title="确认删除？"
+                    @confirm="handleDelete(item,childIndex)"
+                  >
+                    <i
+                      class="delete iconfont icon-tubiaozhizuo-1"
+                      slot="reference"
+                    ></i>
+                  </el-popconfirm>
+                </div>
               </div>
             </div>
             <div
@@ -92,7 +114,8 @@
                 type="primary"
                 size="mini"
                 @click="handleReplySubmit(item)"
-              >提交</el-button>
+              >提交
+              </el-button>
             </div>
           </div>
         </li>
@@ -113,7 +136,7 @@ export default {
       messageList = (await $axios.get("/messages")).data.data
     } catch (e) {
     }
-    messageList.forEach(item=>{
+    messageList.forEach(item => {
       item.replyUser = item.user
       item.replyText = ""
     })
@@ -233,18 +256,18 @@ export default {
     //回复展开
     async handleReplyClick(index, thisItem, item) {
       //检测是否登录
-      if (!this.userInfo._id){
+      if (!this.userInfo._id) {
         return this.$message.error("请先登录")
       }
       //展开与收起
 
-      let ref = this.$refs['reply'+index][0]
-      let input = this.$refs['reply_textarea_'+index][0]
+      let ref = this.$refs['reply' + index][0]
+      let input = this.$refs['reply_textarea_' + index][0]
 
       //判断是否同一次点击
       if (item.replyUser._id === thisItem.user._id) {
         ref.classList.toggle('slideUp')
-      }else{
+      } else {
         item.replyUser = thisItem.user
         ref.classList.remove("slideUp")
       }
@@ -252,38 +275,38 @@ export default {
       !ref.classList.contains("slideUp") && input.focus();
 
       //其他item隐藏
-      this.messageList.forEach((messageItem,messageIndex)=>{
-        if (messageIndex === index)return
-        this.$refs['reply'+messageIndex][0].classList.add("slideUp")
+      this.messageList.forEach((messageItem, messageIndex) => {
+        if (messageIndex === index) return
+        this.$refs['reply' + messageIndex][0].classList.add("slideUp")
       })
     },
 
     //回复提交
-    async handleReplySubmit(item){
+    async handleReplySubmit(item) {
       let value = item.replyText.trim()
       let userId = this.userInfo._id
       //检测是否登录
-      if (!userId){
+      if (!userId) {
         return this.$message.error("请先登录")
       }
       //检测内容是否存在
-      if (!value){
+      if (!value) {
         return this.$message.error("请输入回复内容")
       }
       //发送请求给后端
-      try{
+      try {
         let {data} = await this.$axios({
           method: "post"
-          ,url: "/messages/reply"
-          ,data: {
+          , url: "/messages/reply"
+          , data: {
             messageId: item._id
-            ,content: value
-            ,userId: userId
-            ,replyId: item.user._id
+            , content: value
+            , userId: userId
+            , replyId: item.user._id
           }
         })
 
-        if (data.code !== 0){
+        if (data.code !== 0) {
           return this.$message.error("提交出错，请稍后再试")
         }
 
@@ -291,14 +314,25 @@ export default {
           type: "success",
           duration: 1000,
           message: "提交成功",
-          onClose(){
+          onClose() {
             window.location.reload()
           }
         })
 
-      }catch (e) {
+      } catch (e) {
         this.$message.error("提交出错，请稍后再试")
       }
+    },
+
+    //留言&回复 删除
+    async handleDelete(item,index){
+
+      if (index === undefined){
+        //删除留言
+      }else{
+        //删除回复
+      }
+
     }
   },
   mounted() {
@@ -439,7 +473,7 @@ export default {
         > li {
           font-size: 12px;
 
-          .iconfont{
+          .iconfont {
             font-size: 14px;
           }
 
@@ -450,6 +484,7 @@ export default {
             border-bottom: 1px dashed #ddd;
 
             .left {
+              position: relative;
               width: 40px;
               height: 40px;
               margin-right: 15px;
@@ -460,6 +495,16 @@ export default {
                 width: 100%;
                 height: 100%;
                 border-radius: 50%;
+              }
+
+              .admin {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                background-color: red;
+                width: 16px;
+                height: 16px;
+                background: url("~static/img/admin.png") no-repeat center/cover;
               }
             }
 
@@ -485,7 +530,7 @@ export default {
                 font-family: "Microsoft YaHei", "sans-serif";
               }
 
-              p.like-reply {
+              .like-reply {
                 color: #aaa;
 
                 .like {
@@ -506,6 +551,10 @@ export default {
                   top: 2px;
                   cursor: pointer;
                 }
+
+                .delete {
+                  cursor: pointer;
+                }
               }
 
               .second {
@@ -520,7 +569,8 @@ export default {
                   margin-bottom: 3px;
                   color: #666;
                   font-family: "Microsoft YaHei", "sans-serif";
-                  span{
+
+                  span {
                     color: #409eff;
                     margin-right: 5px;
                   }

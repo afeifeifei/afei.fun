@@ -22,7 +22,14 @@ router.post("/", async (req, res) => {
   };
 
   //参数检测
-  if (!params.openId){
+  if (!params.openId
+    || !params.city
+    || !params.photo
+    || !params.gender
+    || !params.nickname
+    || !params.province
+    || !params.year
+  ){
     return res.send({
       code: 5,
       msg: "参数错误",
