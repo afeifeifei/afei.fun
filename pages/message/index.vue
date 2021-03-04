@@ -302,7 +302,7 @@ export default {
             messageId: item._id
             , content: value
             , userId: userId
-            , replyId: item.user._id
+            , replyId: item.replyUser._id
           }
         })
 
