@@ -9,6 +9,8 @@ mongoose.connect("mongodb://localhost:27017/blog", {
   console.log("数据库连接失败", e)
 })
 
+module.exports = mongoose
+
 
 
 

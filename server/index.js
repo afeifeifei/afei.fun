@@ -6,18 +6,10 @@ const path = require("path")
 require("./middleware/mongoose")
 
 //跨域
-app.all('*', (req, res, next) => {
-  let host = (req.headers.referer+"").replace(/\/$/,"");
-  if (host === "http://www.afei.fun" || host === "http://afei.fun"){
-    res.header("Access-Control-Allow-Origin", host);
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-    res.header("Access-Control-Allow-Credentials","true");
-    res.header("X-Powered-By",' 3.2.1')
-    res.header("Content-Type", "application/json;charset=utf-8");
-  }
-  next();
-});
+app.all('*', require("./middleware/cors"));
+
+//配置session
+app.use(require("./middleware/session"))
 
 //中间件
 app.use(express.json())

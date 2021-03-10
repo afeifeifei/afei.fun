@@ -35,6 +35,7 @@ export default {
           ,url: "/login"
           ,data: {
             openId,
+            accessToken,
             ...data
           }
         })

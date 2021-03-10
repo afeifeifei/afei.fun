@@ -8,6 +8,7 @@ router.post("/", async (req, res) => {
   //整理数据
   let params = {
     openId: data.openId,
+    accessToken: data.accessToken,
     city: data.city,
     photo: data.figureurl_qq_2 ||
       data.figureurl_qq_1 ||
@@ -23,6 +24,7 @@ router.post("/", async (req, res) => {
 
   //参数检测
   if (!params.openId
+    || !params.accessToken
     || !params.city
     || !params.photo
     || !params.gender
