@@ -88,13 +88,20 @@ export default {
     async loginCheck(){
       //本地测试登陆
       if (process.env.NODE_ENV !== "production") {
+        // 飞老师
+        // window.localStorage.setItem("openId","C43BA7A96D473C5C031A6EF028A3480F")
+        // window.localStorage.setItem("access_token","378AAFA6563E1FCB29D379F0B85035BF")
+
+        //妖刀呱
+        window.localStorage.setItem("openId","7F50309B5A0BF8CCD8BA0B214A939072")
+        window.localStorage.setItem("access_token","B7CD6677D8E89402BC621386B436829F")
       }
 
       //获取localStorage
       let openId = window.localStorage.getItem("openId"),
         access_token = window.localStorage.getItem("access_token");
 
-      //没有值得表示未登录
+      //没有值 表示未登录
       if (!openId || !access_token)return
 
       //有值则表示已登录 -- 请求用户信息
@@ -108,6 +115,7 @@ export default {
         }
       })
 
+
       //判断用户信息是否请求成功
       if (res.data.code !== 0) {
         return
@@ -117,6 +125,7 @@ export default {
         ,url: "/login"
         ,data: {
           openId,
+          access_token,
           ...res.data.data
         }
       })

@@ -47,7 +47,7 @@
               <span class="like-num">{{ item.likes.length }}</span>
               <i
                 class="reply iconfont icon-huifu"
-                @click="handleReplyClick(index,item,item)"
+                @click="handleReplyClick(item,item)"
               ></i>
               <el-popconfirm
                 v-if="userInfo.admin"
@@ -82,7 +82,7 @@
                   <span class="like-num">{{ childItem.likes.length }}</span>
                   <i
                     class="reply iconfont icon-huifu"
-                    @click="handleReplyClick(index,childItem,item)"
+                    @click="handleReplyClick(childItem,item)"
                   ></i>
                   <el-popconfirm
                     v-if="userInfo.admin"
@@ -98,11 +98,12 @@
               </div>
             </div>
             <div
-              class="reply-textarea slideUp"
-              :ref="'reply'+index"
+              class="reply-textarea"
+              :class="{
+                slideUp: !item.isShowReply
+              }"
             >
               <el-input
-                :ref="'reply_textarea_'+index"
                 type="text"
                 size="mini"
                 v-model="item.replyText"
@@ -127,19 +128,30 @@
 <script>
 import {mapState, mapMutations} from "vuex"
 
-export default {
-  name: "index",
-  async asyncData({$axios}) {
+//封装获取评论列表的方法
+const getMessageList = $axios => {
+  return new Promise(async resolve => {
     //请求所有留言数据
     let messageList = []
     try {
       messageList = (await $axios.get("/messages")).data.data
-    } catch (e) {
-    }
+    } catch (e) {}
     messageList.forEach(item => {
       item.replyUser = item.user
       item.replyText = ""
+      item.isShowReply = false
     })
+    resolve(messageList)
+  })
+}
+
+
+
+export default {
+  name: "index",
+  async asyncData({$axios}) {
+    //请求所有留言数据
+    let messageList = await getMessageList($axios)
     return {
       messageList
     }
@@ -214,8 +226,10 @@ export default {
           type: "success",
           message: data.msg,
           duration: 1000,
-          onClose() {
-            window.location.reload();
+          onClose: () => {
+            getMessageList(this.$axios).then(data=>{
+              this.messageList = data
+            })
           }
         })
 
@@ -254,31 +268,25 @@ export default {
     },
 
     //回复展开
-    async handleReplyClick(index, thisItem, item) {
+    async handleReplyClick(thisItem, item) {
       //检测是否登录
       if (!this.userInfo._id) {
         return this.$message.error("请先登录")
       }
       //展开与收起
-
-      let ref = this.$refs['reply' + index][0]
-      let input = this.$refs['reply_textarea_' + index][0]
-
-      //判断是否同一次点击
-      if (item.replyUser._id === thisItem.user._id) {
-        ref.classList.toggle('slideUp')
-      } else {
+      if (!item.isShowReply) {
+        //如果当前隐藏，那么就展开
         item.replyUser = thisItem.user
-        ref.classList.remove("slideUp")
+        item.isShowReply = true
+      } else {
+        //如果当前展开，看情况继续展开还是隐藏
+        if (item.replyUser._id === thisItem.user._id) {
+          item.isShowReply = false
+        } else {
+          item.replyUser = thisItem.user
+        }
       }
-      //聚焦
-      !ref.classList.contains("slideUp") && input.focus();
 
-      //其他item隐藏
-      this.messageList.forEach((messageItem, messageIndex) => {
-        if (messageIndex === index) return
-        this.$refs['reply' + messageIndex][0].classList.add("slideUp")
-      })
     },
 
     //回复提交
@@ -314,8 +322,10 @@ export default {
           type: "success",
           duration: 1000,
           message: "提交成功",
-          onClose() {
-            window.location.reload()
+          onClose: () => {
+            getMessageList(this.$axios).then(data=>{
+              this.messageList = data
+            })
           }
         })
 
@@ -325,15 +335,31 @@ export default {
     },
 
     //留言&回复 删除
-    async handleDelete(item,index){
+    async handleDelete(item, index) {
 
-      if (index === undefined){
+      if (index === undefined) {
         //删除留言
-      }else{
+      } else {
         //删除回复
       }
 
-    }
+    },
+
+    /*//重新获取评论列表
+    async getMessageList() {
+      //请求所有留言数据
+      let messageList = []
+      try {
+        messageList = (await this.$axios.get("/messages")).data.data
+      } catch (e) {
+      }
+      messageList.forEach(item => {
+        item.replyUser = item.user
+        item.replyText = ""
+        item.isShowReply = false
+      })
+      this.messageList = messageList
+    }*/
   },
   mounted() {
     document.addEventListener("click", () => {
@@ -374,7 +400,7 @@ export default {
     box-shadow: 0 0 4px #ddd;
     padding: 25px 20px;
     background-color: #fff;
-    font-family: "Quicksand","Microsoft YaHei", sans-serif;
+    font-family: "Quicksand", "Microsoft YaHei", sans-serif;
 
     h2 {
       margin-bottom: 15px;
@@ -403,7 +429,7 @@ export default {
 
         textarea {
           min-height: 80px !important;
-          font-family: "Quicksand","Microsoft YaHei", sans-serif;
+          font-family: "Quicksand", "Microsoft YaHei", sans-serif;
           color: #444;
           font-size: 14px;
           letter-spacing: 4px;

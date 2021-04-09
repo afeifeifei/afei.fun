@@ -66,6 +66,7 @@ router.post("/likes", async (req, res) => {
   try {
     delete item.replyUser
     delete item.replyText
+    delete item.isShowReply
 
     await messageDB.updateOne({_id: item._id}, item)
     return res.send({

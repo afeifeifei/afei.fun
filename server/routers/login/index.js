@@ -8,7 +8,7 @@ router.post("/", async (req, res) => {
   //整理数据
   let params = {
     openId: data.openId,
-    accessToken: data.accessToken,
+    accessToken: data.access_token,
     city: data.city,
     photo: data.figureurl_qq_2 ||
       data.figureurl_qq_1 ||

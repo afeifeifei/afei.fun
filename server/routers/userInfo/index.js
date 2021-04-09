@@ -6,7 +6,7 @@ const qs = require("querystring")
 //根据token请求用户信息
 router.get("/", async (req, res) => {
   let params = req.query;
-  console.log("https://graph.qq.com/user/get_user_info"+"?"+qs.stringify(params));
+  // console.log("https://graph.qq.com/user/get_user_info"+"?"+qs.stringify(params));
   try{
     request.get(
       "https://graph.qq.com/user/get_user_info"+"?"+qs.stringify(params),
